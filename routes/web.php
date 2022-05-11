@@ -19,4 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get("/",[productController::class,"index"]);
+Route::get("/",[productController::class,"index"])->name('index');
+
+Route::post("/tambahProduk/Simpan",[productController::class,"store"]);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 
 class productController extends Controller
 {
@@ -31,7 +32,7 @@ class productController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -41,8 +42,22 @@ class productController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    { 
+        $foto = $request->file('gambar');
+        $NamaFoto = time().'.'.$foto->extension();
+        $foto->move(public_path('produk'), $NamaFoto);
+
+        $response = Http::post('http://localhost:9010/produk/',[
+            'nama' => $request->nama,
+            'kategori' => $request->kategori,
+            'harga' => $request->harga,
+            'jumlah' => $request->jumlah,
+            'gambar' => $NamaFoto,
+            'detail' => $request->detail
+        ]);
+
+        return redirect(route('index'));
+
     }
 
     /**

@@ -49,17 +49,16 @@
       </nav>
       <br><br><br>
       <div class="container">
-      <table class="table">
+        <a href="" class="btn btn-info mb-4 fw-bold text-light" data-bs-toggle="modal" data-bs-target="#tambahDataProduk">Tambah Data</a>
+        
+      <table class="table table-bordered">
         <thead>
           <tr>
             <th scope="col">No</th>
-            <th scope="col">NIM</th>
-            <th scope="col">NAMA</th>
-            <th scope="col">Jurusan</th>
-            {{-- <th scope="col">IPK</th>
-            <th scope="col">Jurusan</th>
-            <th scope="col">Angkatan</th>
-            <th scope="col">Status Aktif</th> --}}
+            <th scope="col">Nama</th>
+            <th scope="col">Kategori</th>
+            <th scope="col">Jumlah</th>
+            <th scope="col">Harga</th>
           </tr>
         </thead>
         <tbody>
@@ -67,8 +66,9 @@
           <tr>
             <th scope="row">{{$loop->iteration}}</th>
             <td>{{$item['nama']}}</td>
-            <td>{{$item['harga']}}</td>
             <td>{{$item['kategori']}}</td>
+            <td>{{$item['jumlah']}}</td>
+            <td>{{$item['harga']}}</td>
           </tr>
           @endforeach
         </tbody>
@@ -79,7 +79,7 @@
       @foreach ($data as $item)
       <div class="col-md-4 container mb-3">
         <div class="card container" style="width: 18rem;">
-          <img src="..." class="card-img-top" alt="...">
+          <img src="/produk/{{$item['gambar']}}" class="card-img-top" alt="..." width="100">
           <div class="card-body">
             <h5 class="card-title">{{$item['nama']}}</h5>
             <p class="card-text">{{$item['detail']}}</p>
@@ -94,6 +94,9 @@
           </div>
         </div>
       </div>
+
+      @include('layouts.modalTambahDataProduk')
+
       @endforeach
     </div>
     <!-- Optional JavaScript; choose one of the two! -->
