@@ -59,6 +59,7 @@
             <th scope="col">Kategori</th>
             <th scope="col">Jumlah</th>
             <th scope="col">Harga</th>
+            <th scope="col">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -69,6 +70,13 @@
             <td>{{$item['kategori']}}</td>
             <td>{{$item['jumlah']}}</td>
             <td>{{$item['harga']}}</td>
+            <td>
+              <div class="d-flex justify-content-center">
+                <a href="" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#ubahDataProduk{{$item['ID']}}">ubah</a>
+                &nbsp;
+                <a href="/hapus-product/{{$item['ID']}}" class="btn btn-danger">hapus</a>
+              </div>
+            </td>
           </tr>
           @endforeach
         </tbody>
@@ -96,6 +104,8 @@
       </div>
 
       @include('layouts.modalTambahDataProduk')
+
+      @include('layouts.modalUbahDataProduk')
 
       @endforeach
     </div>

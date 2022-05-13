@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Http;
 
 class productController extends Controller
 {
+    private $_product;
+
+    public function __construct()
+    {
+        $this->_product = new Client([
+            'base_uri' => 'http://localhost:9010/'
+        ]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -50,8 +60,8 @@ class productController extends Controller
         $response = Http::post('http://localhost:9010/produk/',[
             'nama' => $request->nama,
             'kategori' => $request->kategori,
-            'harga' => $request->harga,
-            'jumlah' => $request->jumlah,
+            'harga' => (int)$request->harga,
+            'jumlah' => (int)$request->jumlah,
             'gambar' => $NamaFoto,
             'detail' => $request->detail
         ]);
@@ -91,7 +101,26 @@ class productController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $apiURL = 'http://localhost:9010/produk/'.$id;
+
+        
+        $foto = $request->file('gambar');
+        $NamaFoto = time().'.'.$foto->extension();
+        $foto->move(public_path('produk'), $NamaFoto);
+
+        $response = Http::put($apiURL, [
+            'id' =>  $request->id,
+            'nama' => $request->nama,
+            'kategori' => $request->kategori,
+            'harga' => (int)$request->harga,
+            'jumlah' => (int)$request->jumlah,
+            'gambar' => $NamaFoto,
+            'detail' => $request->detail
+        ]);
+
+        $response = $response->body();
+
+        return redirect(route('index'));
     }
 
     /**
@@ -102,6 +131,12 @@ class productController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $apiURL = 'http://localhost:9010/produk/'.$id;
+
+        $client = new Client();
+        $response = $client->request("DELETE",$apiURL);
+
+        return redirect(route('index'));
     }
 }

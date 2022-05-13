@@ -22,3 +22,22 @@ Route::get('/', function () {
 Route::get("/",[productController::class,"index"])->name('index');
 
 Route::post("/tambahProduk/Simpan",[productController::class,"store"]);
+
+Route::post("/ubahProduk/Simpan/{id}",[productController::class,"update"]);
+
+Route::get("/hapus-product/{id}",[productController::class,"destroy"]);
+
+
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});
