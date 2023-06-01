@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\mahasiswaController;
 use App\Http\Controllers\productController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,16 +30,19 @@ Route::post("/ubahProduk/Simpan/{id}",[productController::class,"update"]);
 Route::get("/hapus-product/{id}",[productController::class,"destroy"]);
 
 
-Route::group([
+Auth::routes();
 
-    'middleware' => 'api',
-    'prefix' => 'auth'
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-], function ($router) {
 
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+Route::post("/daftar/Simpan",[AuthController::class,"daftar"]);
+
+
+Route::post("/login/Simpan",[AuthController::class,"login"]);
+
+
+
+Route::middleware([EnsureTokenIsValid::class])->group(function () {
+    Route::get('/book', [AuthController::class, 'indexBooks'])->name('book');
 
 });
